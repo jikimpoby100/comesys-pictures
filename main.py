@@ -57,6 +57,11 @@ def fetch_github_image_list():
         st.error("❌ 이미지가 없습니다.")
         return []
 
+def upload_description(filename_base, description_text):
+    desc_filename = f"{filename_base}.txt"
+    desc_content = description_text.encode("utf-8")
+    return upload_to_github(desc_filename, desc_content)
+
 def main():
     st.title("📷 이미지 자동 업로드 & 이미지 보기")
 
@@ -64,14 +69,22 @@ def main():
 
     with tab1:
         uploaded_file = st.file_uploader("이미지를 선택하세요", type=["jpg", "jpeg", "png"], key="single_auto")
+        description = st.text_input("이미지 설명을 입력하세요", key="desc1")
         if uploaded_file is not None:
-            handle_upload(uploaded_file)
+            index = 0
+            now = datetime.now().strftime('%Y%m%d_%H%M%S')
+            base_filename = f"{now}_{index}"
+            handle_upload(uploaded_file, index=0)
+            upload_description(base_filename, description)
 
     with tab2:
         uploaded_files = st.file_uploader("여러 이미지를 선택하세요", type=["jpg", "jpeg", "png"], accept_multiple_files=True, key="multi_auto")
         if uploaded_files:
             for idx, file in enumerate(uploaded_files):
+                base_filename = datetime.now().strftime('%Y%m%d_%H%M%S') + f"_{idx}"
+                description = st.text_input(f"설명 입력 ({file.name})", key=f"desc_multi_{idx}")
                 handle_upload(file, index=idx)
+                upload_description(base_filename, description)
 
     with tab3:
         st.subheader("📁 현재 GitHub에 저장된 이미지 목록")
