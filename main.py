@@ -81,7 +81,7 @@ def main():
         if images:
             for img in images:
                 github_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{img['name']}"
-                st.image(github_url, caption=img["name"], use_column_width=True)
+                st.image(github_url, caption=img["name"], use_container_width =True)
                 st.markdown(f"[🔗 {img['name']}]({github_url})", unsafe_allow_html=True)
 
 if __name__ == "__main__":
