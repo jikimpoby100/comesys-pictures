@@ -35,7 +35,7 @@ def handle_upload(file, index=0):
     if result.status_code == 201:
         st.success(f"✅ {filename} 업로드 성공")
         github_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{filename}"
-        st.image(github_url, caption=filename, use_column_width=True)
+        st.image(github_url, caption=filename, use_container_width=True)
         st.markdown(f"[🔗 GitHub 이미지 링크]({github_url})")
     else:
         st.error(f"❌ {filename} 업로드 실패")
@@ -81,7 +81,7 @@ def main():
         if images:
             for img in images:
                 github_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{img['name']}"
-                st.image(github_url, caption=img["name"], use_column_width=True)
+                st.image(github_url, caption=img["name"], use_container_width=True)
 
 if __name__ == "__main__":
     main()
