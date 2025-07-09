@@ -54,9 +54,7 @@ def fetch_github_image_list():
         images = [f for f in files if f["name"].lower().endswith((".jpg", ".jpeg", ".png"))]
         return images
     else:
-        st.error("❌ 이미지 목록 불러오기 실패")
-        st.write("Status Code:", response.status_code)
-        st.write("Response:", response.text)
+        st.error("❌ 이미지가 없습니다.")
         return []
 
 def main():
