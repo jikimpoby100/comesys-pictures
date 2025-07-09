@@ -78,9 +78,19 @@ def main():
         images = fetch_github_image_list()
         if images:
             for img in images:
-                github_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{img['name']}"
-                st.image(github_url, caption=img["name"], use_container_width =True)
-                st.markdown(f"[🔗 {img['name']}]({github_url})", unsafe_allow_html=True)
+                img_name = img["name"]
+                if img_name.lower().endswith((".jpg", ".jpeg", ".png")):
+                    base_name = img_name.rsplit(".", 1)[0]
+                    github_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{img_name}"
+                    desc_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{GITHUB_PATH}/{base_name}.txt"
+                    st.image(github_url, caption=img_name, use_container_width=True)
+                    try:
+                        desc_response = requests.get(desc_url)
+                        if desc_response.status_code == 200:
+                            st.markdown(f"📄 설명: {desc_response.text}")
+                    except:
+                        pass
+                    st.markdown(f"[🔗 {img_name}]({github_url})", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
