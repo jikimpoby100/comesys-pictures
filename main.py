@@ -58,6 +58,7 @@ def fetch_github_image_list():
     if response.status_code == 200:
         files = response.json()
         images = [f for f in files if f["name"].lower().endswith((".jpg", ".jpeg", ".png"))]
+        images = sorted(images, key=lambda x: x["name"], reverse=True)
         return images
     else:
         st.error("❌ 이미지 목록 불러오기 실패")
